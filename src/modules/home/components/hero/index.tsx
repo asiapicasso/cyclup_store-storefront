@@ -10,21 +10,15 @@ const Hero = () => {
             level="h1"
             className="text-3xl leading-10 text-ui-fg-base font-normal"
           >
-            Ecommerce Starter Template
-          </Heading>
-          <Heading
-            level="h2"
-            className="text-3xl leading-10 text-ui-fg-subtle font-normal"
-          >
-            Powered by Medusa and Next.js
+            Site fermé pour le week-end. Venez en boutique !
           </Heading>
         </span>
         <a
-          href="https://github.com/medusajs/nextjs-starter-medusa"
+          href="https://maps.app.goo.gl/Kd4JEZ164rgA1YyV8"
           target="_blank"
         >
           <Button variant="secondary">
-            View on GitHub
+            Notre showroom
             <Github />
           </Button>
         </a>
