@@ -12,6 +12,7 @@ import CountrySelect from "../country-select"
 const SideMenuItems = {
   Home: "/",
   Store: "/store",
+  Service: "/service",
   Search: "/search",
   Account: "/account",
   Cart: "/cart",
