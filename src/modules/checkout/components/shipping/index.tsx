@@ -1,19 +1,22 @@
 "use client"
 
 import { RadioGroup } from "@headlessui/react"
+import { formatAmount } from "@lib/util/prices"
 import { CheckCircleSolid } from "@medusajs/icons"
 import { Cart } from "@medusajs/medusa"
 import { PricedShippingOption } from "@medusajs/medusa/dist/types/pricing"
-import { Button, Heading, Text, clx, useToggleState } from "@medusajs/ui"
-import { formatAmount } from "@lib/util/prices"
+import { Button, Heading, Text, clx } from "@medusajs/ui"
 
+import { Alert } from "@medusajs/ui"
+import { setShippingMethod } from "@modules/checkout/actions"
+import ErrorMessage from "@modules/checkout/components/error-message"
 import Divider from "@modules/common/components/divider"
 import Radio from "@modules/common/components/radio"
 import Spinner from "@modules/common/icons/spinner"
-import ErrorMessage from "@modules/checkout/components/error-message"
-import { setShippingMethod } from "@modules/checkout/actions"
-import { useRouter, useSearchParams, usePathname } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
+
+
 
 type ShippingProps = {
   cart: Omit<Cart, "refundable_amount" | "refunded_total">
@@ -131,7 +134,9 @@ const Shipping: React.FC<ShippingProps> = ({
                           includeTaxes: false,
                         })}
                       </span>
+
                     </RadioGroup.Option>
+
                   )
                 })
               ) : (
@@ -140,6 +145,40 @@ const Shipping: React.FC<ShippingProps> = ({
                 </div>
               )}
             </RadioGroup>
+
+            <h3 className="text-lg font-medium mt-8 mb-4">Décrivez-nous l'accès de l'emplacement futur de votre achat</h3>
+
+            <RadioGroup>
+              <div className="grid grid-cols-2 items-center justify-between text-medium-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 ">
+
+                <RadioGroup.Option value="maison" className="flex items-center ">
+                  <Radio checked={false} />
+                  <span className="ml-2">Maison</span>
+                </RadioGroup.Option>
+                <RadioGroup.Option value="appartement" className="flex items-center">
+                  <Radio checked={false} />
+                  <span className="ml-2">Appartement</span>
+                </RadioGroup.Option>            </div>
+
+            </RadioGroup>
+
+            <RadioGroup>
+              <div className="grid grid-cols-2 items-center justify-between text-medium-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 ">
+
+
+                <RadioGroup.Option value="ascenseur" className="flex items-center">
+                  <Radio checked={false} />
+                  <span className="ml-2">Ascenseur</span>
+                </RadioGroup.Option>
+                <RadioGroup.Option value="escalier" className="flex items-center">
+                  <Radio checked={false} />
+                  <span className="ml-2">Escalier</span>
+                </RadioGroup.Option> </div>
+            </RadioGroup>
+
+            <Alert variant="info">
+              Les frais de livraisons varient en fonction de la valeur de l'objet et de l'accès au lieu.
+            </Alert>
           </div>
 
           <ErrorMessage error={error} />
