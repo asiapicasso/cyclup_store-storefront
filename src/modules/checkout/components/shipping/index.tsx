@@ -4,11 +4,9 @@ import { RadioGroup } from "@headlessui/react"
 import { formatAmount } from "@lib/util/prices"
 import { CheckCircleSolid } from "@medusajs/icons"
 import { Cart } from "@medusajs/medusa"
-import { PricedShippingOption } from "@medusajs/medusa/dist/types/pricing"
 import { Button, Heading, Text, clx } from "@medusajs/ui"
 
 import { Alert } from "@medusajs/ui"
-import { setShippingMethod } from "@modules/checkout/actions"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import Divider from "@modules/common/components/divider"
 import Radio from "@modules/common/components/radio"
@@ -16,19 +14,17 @@ import Spinner from "@modules/common/icons/spinner"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
-
-
 type ShippingProps = {
   cart: Omit<Cart, "refundable_amount" | "refunded_total">
-  availableShippingMethods: PricedShippingOption[] | null
 }
 
-const Shipping: React.FC<ShippingProps> = ({
-  cart,
-  availableShippingMethods,
-}) => {
+const Shipping: React.FC<ShippingProps> = ({ cart }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [selectedResidence, setSelectedResidence] = useState<string | null>(null)
+  const [selectedAccess, setSelectedAccess] = useState<string | null>(null)
+  const [residenceError, setResidenceError] = useState<string | null>(null)
+  const [accessError, setAccessError] = useState<string | null>(null)
 
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -41,30 +37,37 @@ const Shipping: React.FC<ShippingProps> = ({
   }
 
   const handleSubmit = () => {
+    let hasError = false
+    if (!selectedResidence) {
+      setResidenceError("Veuillez sélectionner une option de résidence.")
+      hasError = true
+    } else {
+      setResidenceError(null)
+    }
+
+    if (!selectedAccess) {
+      setAccessError("Veuillez sélectionner une option d'accès.")
+      hasError = true
+    } else {
+      setAccessError(null)
+    }
+
+    if (hasError) {
+      return
+    }
+
     setIsLoading(true)
     router.push(pathname + "?step=payment", { scroll: false })
-  }
-
-  const set = async (id: string) => {
-    setIsLoading(true)
-    await setShippingMethod(id)
-      .then(() => {
-        setIsLoading(false)
-      })
-      .catch((err) => {
-        setError(err.toString())
-        setIsLoading(false)
-      })
-  }
-
-  const handleChange = (value: string) => {
-    set(value)
   }
 
   useEffect(() => {
     setIsLoading(false)
     setError(null)
   }, [isOpen])
+
+  function handleChange(value: string): void {
+    throw new Error("Function not implemented.")
+  }
 
   return (
     <div className="bg-white">
@@ -103,8 +106,8 @@ const Shipping: React.FC<ShippingProps> = ({
               value={cart.shipping_methods[0]?.shipping_option_id}
               onChange={(value: string) => handleChange(value)}
             >
-              {availableShippingMethods ? (
-                availableShippingMethods.map((option) => {
+              {cart.shipping_methods ? (
+                cart.shipping_methods.map((option) => {
                   return (
                     <RadioGroup.Option
                       key={option.id}
@@ -134,9 +137,7 @@ const Shipping: React.FC<ShippingProps> = ({
                           includeTaxes: false,
                         })}
                       </span>
-
                     </RadioGroup.Option>
-
                   )
                 })
               ) : (
@@ -148,33 +149,35 @@ const Shipping: React.FC<ShippingProps> = ({
 
             <h3 className="text-lg font-medium mt-8 mb-4">Décrivez-nous l'accès de l'emplacement futur de votre achat</h3>
 
-            <RadioGroup>
-              <div className="grid grid-cols-2 items-center justify-between text-medium-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 ">
-
+            <RadioGroup value={selectedResidence} onChange={setSelectedResidence}>
+              <div className="grid grid-cols-2 items-center justify-between text-medium-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2">
                 <RadioGroup.Option value="maison" className="flex items-center ">
-                  <Radio checked={false} />
+                  <Radio checked={selectedResidence === 'maison'} />
                   <span className="ml-2">Maison</span>
                 </RadioGroup.Option>
                 <RadioGroup.Option value="appartement" className="flex items-center">
-                  <Radio checked={false} />
+                  <Radio checked={selectedResidence === 'appartement'} />
                   <span className="ml-2">Appartement</span>
-                </RadioGroup.Option>            </div>
-
+                </RadioGroup.Option>
+              </div>
             </RadioGroup>
 
-            <RadioGroup>
-              <div className="grid grid-cols-2 items-center justify-between text-medium-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 ">
+            {residenceError && <p className="text-red-500">{residenceError}</p>}
 
-
+            <RadioGroup value={selectedAccess} onChange={setSelectedAccess}>
+              <div className="grid grid-cols-2 items-center justify-between text-medium-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2">
                 <RadioGroup.Option value="ascenseur" className="flex items-center">
-                  <Radio checked={false} />
+                  <Radio checked={selectedAccess === 'ascenseur'} />
                   <span className="ml-2">Ascenseur</span>
                 </RadioGroup.Option>
                 <RadioGroup.Option value="escalier" className="flex items-center">
-                  <Radio checked={false} />
+                  <Radio checked={selectedAccess === 'escalier'} />
                   <span className="ml-2">Escalier</span>
-                </RadioGroup.Option> </div>
+                </RadioGroup.Option>
+              </div>
             </RadioGroup>
+
+            {accessError && <p className="text-red-500">{accessError}</p>}
 
             <Alert variant="info">
               Les frais de livraisons varient en fonction de la valeur de l'objet et de l'accès au lieu.
@@ -188,7 +191,7 @@ const Shipping: React.FC<ShippingProps> = ({
             className="mt-6"
             onClick={handleSubmit}
             isLoading={isLoading}
-            disabled={!cart.shipping_methods[0]}
+            disabled={!selectedResidence || !selectedAccess}
           >
             Continue to payment
           </Button>

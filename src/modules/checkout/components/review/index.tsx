@@ -2,9 +2,9 @@
 
 import { Heading, Text, clx } from "@medusajs/ui"
 
-import PaymentButton from "../payment-button"
-import { useSearchParams } from "next/navigation"
 import { Cart } from "@medusajs/medusa"
+import { useSearchParams } from "next/navigation"
+import PaymentButton from "../payment-button"
 
 const Review = ({
   cart,
@@ -17,8 +17,9 @@ const Review = ({
 
   const previousStepsCompleted =
     cart.shipping_address &&
-    cart.shipping_methods.length > 0 &&
+    cart.shipping_methods.length >= 0 &&
     cart.payment_session
+
 
   return (
     <div className="bg-white">
