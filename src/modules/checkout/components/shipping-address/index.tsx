@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useMemo } from "react"
-import { Address, Cart, Customer } from "@medusajs/medusa"
+import { RadioGroup } from "@headlessui/react"
+import { Cart, Customer } from "@medusajs/medusa"
+import { Container } from "@medusajs/ui"
 import Checkbox from "@modules/common/components/checkbox"
 import Input from "@modules/common/components/input"
+import Radio from "@modules/common/components/radio"
+import React, { useEffect, useMemo, useState } from "react"
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
-import { Container } from "@medusajs/ui"
+
 
 const ShippingAddress = ({
   customer,
@@ -32,6 +35,11 @@ const ShippingAddress = ({
     email: cart?.email || "",
     "shipping_address.phone": cart?.shipping_address?.phone || "",
   })
+
+  const [selectedResidence, setSelectedResidence] = useState<string | null>(null)
+  const [selectedAccess, setSelectedAccess] = useState<string | null>(null)
+  const [residenceError, setResidenceError] = useState<string | null>(null)
+  const [accessError, setAccessError] = useState<string | null>(null)
 
   const countriesInRegion = useMemo(
     () => cart?.region.countries.map((c) => c.iso_2),
@@ -74,6 +82,67 @@ const ShippingAddress = ({
     })
   }
 
+  const handleResidenceChange = (value: string) => {
+    setSelectedResidence(value)
+  }
+
+  const handleAccessChange = (value: string) => {
+    setSelectedAccess(value)
+  }
+
+  const handleSubmit = () => {
+    let hasError = false;
+    if (!selectedResidence) {
+      setResidenceError("Veuillez sélectionner une option de résidence.");
+      hasError = true;
+    } else {
+      setResidenceError(null);
+    }
+
+    if (!selectedAccess) {
+      setAccessError("Veuillez sélectionner une option d'accès.");
+      hasError = true;
+    } else {
+      setAccessError(null);
+    }
+
+    if (hasError) {
+      return;
+    }
+
+    const residenceIsHouse = selectedResidence === 'maison';
+    const accessIsElevator = selectedAccess === 'ascenseur';
+
+    const data = {
+      delivery_info_residency: residenceIsHouse,
+      delivery_info_access: accessIsElevator,
+    };
+
+    // Fonction pour envoyer les données au backend
+    updateDatabase(data);
+  };
+
+  const updateDatabase = (data: { delivery_info_residency: boolean; delivery_info_access: boolean }) => {
+    fetch('/update-address', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Gérez la réponse
+        console.log('Success:', data);
+        // Redirigez ou mettez à jour l'UI selon les besoins
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // Gérez l'erreur
+      });
+  };
+
+
   return (
     <>
       {customer && (addressesInRegion?.length || 0) > 0 && (
@@ -101,6 +170,42 @@ const ShippingAddress = ({
           onChange={handleChange}
           required
         />
+
+        {/* add radio button here  */}
+        <div className="col-span-2">
+          <h6 className="">Décrivez-nous l'accès de l'emplacement futur de votre achat
+            <span className="text-red-500 ml-1">*</span></h6> </div>
+        <RadioGroup value={selectedResidence} onChange={handleResidenceChange}>
+          <div className="grid grid-cols-2 items-center justify-between text-regular cursor-pointer py-2 border rounded-rounded px-8">
+            <RadioGroup.Option value="maison" className="flex items-center ">
+              <Radio checked={selectedResidence === 'maison'} />
+              <span className="ml-2">Maison</span>
+            </RadioGroup.Option>
+            <RadioGroup.Option value="appartement" className="flex items-center">
+              <Radio checked={selectedResidence === 'appartement'} />
+              <span className="ml-2">Appartement</span>
+            </RadioGroup.Option>
+          </div>
+        </RadioGroup>
+
+        {residenceError && <p className="text-red-500">{residenceError}</p>}
+
+        <RadioGroup value={selectedAccess} onChange={handleAccessChange}>
+          <div className="grid grid-cols-2 items-center justify-between text-regular cursor-pointer py-2 border rounded-rounded px-8">
+            <RadioGroup.Option value="ascenseur" className="flex items-center">
+              <Radio checked={selectedAccess === 'ascenseur'} />
+              <span className="ml-2">Ascenseur</span>
+            </RadioGroup.Option>
+            <RadioGroup.Option value="escalier" className="flex items-center">
+              <Radio checked={selectedAccess === 'escalier'} />
+              <span className="ml-2">Escalier</span>
+            </RadioGroup.Option>
+          </div>
+        </RadioGroup>
+
+        {accessError && <p className="text-red-500">{accessError}</p>}
+
+
         <Input
           label="Address"
           name="shipping_address.address_1"
