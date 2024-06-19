@@ -5,12 +5,12 @@ import { Heading, Text } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 
 type ShippingDetailsProps = {
-  order: Order,
-  selectedResidence: string | null,
-  selectedAccess: string | null
+  order: Order
 }
 
-const ShippingDetails = ({ order, selectedResidence, selectedAccess }: ShippingDetailsProps) => {
+const ShippingDetails = ({ order }: ShippingDetailsProps) => {
+  const { delivery_info_residency, delivery_info_access } = order.shipping_address as any
+
   return (
     <div>
       <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
@@ -48,10 +48,10 @@ const ShippingDetails = ({ order, selectedResidence, selectedAccess }: ShippingD
         <div className="flex flex-col w-1/3">
           <Text className="txt-medium-plus text-ui-fg-base mb-1">Delivery Info</Text>
           <Text className="txt-medium text-ui-fg-subtle">
-            Residence: {selectedResidence ? (selectedResidence === 'maison' ? 'Maison' : 'Appartement') : 'Non spécifié'}
+            Residency: {delivery_info_residency ? 'House' : 'Appartement'}
           </Text>
           <Text className="txt-medium text-ui-fg-subtle">
-            Access: {selectedAccess ? (selectedAccess === 'ascenseur' ? 'Ascenseur' : 'Escalier') : 'Non spécifié'}
+            Access: {delivery_info_access ? 'Elevator' : 'Stairs'}
           </Text>
         </div>
       </div>
