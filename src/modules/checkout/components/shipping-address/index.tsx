@@ -8,7 +8,6 @@ import React, { useEffect, useMemo, useState } from "react"
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
 
-
 const ShippingAddress = ({
   customer,
   cart,
@@ -36,17 +35,17 @@ const ShippingAddress = ({
     "shipping_address.phone": cart?.shipping_address?.phone || "",
   })
 
-  const [selectedResidence, setSelectedResidence] = useState<string | null>(null)
-  const [selectedAccess, setSelectedAccess] = useState<string | null>(null)
+  const [selectedResidence, setSelectedResidence] = useState<boolean | null>(null)
+  const [selectedAccess, setSelectedAccess] = useState<boolean | null>(null)
   const [residenceError, setResidenceError] = useState<string | null>(null)
   const [accessError, setAccessError] = useState<string | null>(null)
+
 
   const countriesInRegion = useMemo(
     () => cart?.region.countries.map((c) => c.iso_2),
     [cart?.region]
   )
 
-  // check if customer has saved addresses that are in the current region
   const addressesInRegion = useMemo(
     () =>
       customer?.shipping_addresses.filter(
@@ -83,24 +82,25 @@ const ShippingAddress = ({
   }
 
   const handleResidenceChange = (value: string) => {
-    setSelectedResidence(value)
+    setSelectedResidence(value === "true")
   }
 
   const handleAccessChange = (value: string) => {
-    setSelectedAccess(value)
+    setSelectedAccess(value === "true")
   }
+
 
   const handleSubmit = () => {
     let hasError = false;
-    if (!selectedResidence) {
-      setResidenceError("Veuillez sélectionner une option de résidence.");
+    if (selectedResidence === null) {
+      setResidenceError("Please select a residence option.");
       hasError = true;
     } else {
       setResidenceError(null);
     }
 
-    if (!selectedAccess) {
-      setAccessError("Veuillez sélectionner une option d'accès.");
+    if (selectedAccess === null) {
+      setAccessError("Please select an access option.");
       hasError = true;
     } else {
       setAccessError(null);
@@ -110,15 +110,11 @@ const ShippingAddress = ({
       return;
     }
 
-    const residenceIsHouse = selectedResidence === 'maison';
-    const accessIsElevator = selectedAccess === 'ascenseur';
-
     const data = {
-      delivery_info_residency: residenceIsHouse,
-      delivery_info_access: accessIsElevator,
+      delivery_info_residency: selectedResidence ?? false,
+      delivery_info_access: selectedAccess ?? false,
     };
 
-    // Fonction pour envoyer les données au backend
     updateDatabase(data);
   };
 
@@ -132,16 +128,12 @@ const ShippingAddress = ({
     })
       .then(response => response.json())
       .then(data => {
-        // Gérez la réponse
         console.log('Success:', data);
-        // Redirigez ou mettez à jour l'UI selon les besoins
       })
       .catch((error) => {
         console.error('Error:', error);
-        // Gérez l'erreur
       });
   };
-
 
   return (
     <>
@@ -171,39 +163,38 @@ const ShippingAddress = ({
           required
         />
 
-        {/* add radio button here  */}
         <div className="col-span-2">
           <h6 className="">Décrivez-nous l'accès de l'emplacement futur de votre achat
             <span className="text-red-500 ml-1">*</span></h6> </div>
-        <RadioGroup value={selectedResidence} onChange={handleResidenceChange}>
+        <RadioGroup value={selectedResidence?.toString()} onChange={handleResidenceChange}>
           <div className="grid grid-cols-2 items-center justify-between text-regular cursor-pointer py-2 border rounded-rounded px-8">
-            <RadioGroup.Option value="maison" className="flex items-center ">
-              <Radio checked={selectedResidence === 'maison'} />
-              <span className="ml-2">Maison</span>
+            <RadioGroup.Option value="true" className="flex items-center">
+              <Radio checked={selectedResidence === true} />
+              <span className="ml-2">House</span>
             </RadioGroup.Option>
-            <RadioGroup.Option value="appartement" className="flex items-center">
-              <Radio checked={selectedResidence === 'appartement'} />
+            <RadioGroup.Option value="false" className="flex items-center">
+              <Radio checked={selectedResidence === false} />
               <span className="ml-2">Appartement</span>
             </RadioGroup.Option>
           </div>
         </RadioGroup>
+        {residenceError && <p className="text-red-500 col-span-2">{residenceError}</p>}
 
-        {residenceError && <p className="text-red-500">{residenceError}</p>}
-
-        <RadioGroup value={selectedAccess} onChange={handleAccessChange}>
+        <RadioGroup value={selectedAccess?.toString()} onChange={handleAccessChange}>
           <div className="grid grid-cols-2 items-center justify-between text-regular cursor-pointer py-2 border rounded-rounded px-8">
-            <RadioGroup.Option value="ascenseur" className="flex items-center">
-              <Radio checked={selectedAccess === 'ascenseur'} />
-              <span className="ml-2">Ascenseur</span>
+            <RadioGroup.Option value="true" className="flex items-center">
+              <Radio checked={selectedAccess === true} />
+              <span className="ml-2">Elevator</span>
             </RadioGroup.Option>
-            <RadioGroup.Option value="escalier" className="flex items-center">
-              <Radio checked={selectedAccess === 'escalier'} />
-              <span className="ml-2">Escalier</span>
+            <RadioGroup.Option value="false" className="flex items-center">
+              <Radio checked={selectedAccess === false} />
+              <span className="ml-2">Stairs</span>
             </RadioGroup.Option>
           </div>
         </RadioGroup>
+        {accessError && <p className="text-red-500 col-span-2">{accessError}</p>}
 
-        {accessError && <p className="text-red-500">{accessError}</p>}
+
 
 
         <Input
