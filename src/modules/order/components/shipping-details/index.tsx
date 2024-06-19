@@ -46,7 +46,13 @@ const ShippingDetails = ({ order, selectedResidence, selectedAccess }: ShippingD
         </div>
 
         <div className="flex flex-col w-1/3">
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">Method</Text>
+          <Text className="txt-medium-plus text-ui-fg-base mb-1">Delivery Info</Text>
+          <Text className="txt-medium text-ui-fg-subtle">
+            Residence: {selectedResidence ? (selectedResidence === 'maison' ? 'Maison' : 'Appartement') : 'Non spécifié'}
+          </Text>
+          <Text className="txt-medium text-ui-fg-subtle">
+            Access: {selectedAccess ? (selectedAccess === 'ascenseur' ? 'Ascenseur' : 'Escalier') : 'Non spécifié'}
+          </Text>
         </div>
       </div>
       <Divider className="mt-8" />
