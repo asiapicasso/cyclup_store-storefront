@@ -9,7 +9,7 @@ import Help from "@modules/order/components/help"
 import Items from "@modules/order/components/items"
 import OrderDetails from "@modules/order/components/order-details"
 import OrderSummary from "@modules/order/components/order-summary"
-import ShippingDetails from "@modules/order/components/shipping-details"
+import ShippingDetails from "../components/shipping-details"
 
 type OrderDetailsTemplateProps = {
   order: Order
@@ -32,7 +32,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
       <div className="flex flex-col gap-4 h-full bg-white w-full">
         <OrderDetails order={order} showStatus />
         <Items items={order.items} region={order.region} />
-        <ShippingDetails order={order} />
+        <ShippingDetails order={order} selectedResidence={null} selectedAccess={null} />
         <OrderSummary order={order} />
         <Help />
       </div>
