@@ -21,10 +21,10 @@ type ShippingProps = {
 const Shipping: React.FC<ShippingProps> = ({ cart }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [selectedResidence, setSelectedResidence] = useState<string | null>(null)
+  /* const [selectedResidence, setSelectedResidence] = useState<string | null>(null)
   const [selectedAccess, setSelectedAccess] = useState<string | null>(null)
   const [residenceError, setResidenceError] = useState<string | null>(null)
-  const [accessError, setAccessError] = useState<string | null>(null)
+  const [accessError, setAccessError] = useState<string | null>(null) */
 
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -36,7 +36,7 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
     router.push(pathname + "?step=delivery", { scroll: false })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = () => {/*
     let hasError = false
     if (!selectedResidence) {
       setResidenceError("Veuillez sélectionner une option de résidence.")
@@ -54,7 +54,7 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
 
     if (hasError) {
       return
-    }
+    }*/
 
     setIsLoading(true)
     router.push(pathname + "?step=payment", { scroll: false })
@@ -65,9 +65,9 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
     setError(null)
   }, [isOpen])
 
-  function handleChange(value: string): void {
-    throw new Error("Function not implemented.")
-  }
+  /*  function handleChange(value: string): void {
+     throw new Error("Function not implemented.")
+   } */
 
   return (
     <div className="bg-white">
@@ -147,7 +147,7 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
               )}
             </RadioGroup>
 
-            <h3 className="text-lg font-medium mt-8 mb-4">Décrivez-nous l'accès de l'emplacement futur de votre achat</h3>
+            {/* <h3 className="text-lg font-medium mt-8 mb-4">Décrivez-nous l'accès de l'emplacement futur de votre achat</h3>
 
             <RadioGroup value={selectedResidence} onChange={setSelectedResidence}>
               <div className="grid grid-cols-2 items-center justify-between text-medium-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2">
@@ -177,21 +177,18 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
               </div>
             </RadioGroup>
 
-            {accessError && <p className="text-red-500">{accessError}</p>}
+            {accessError && <p className="text-red-500">{accessError}</p>} */}
 
             <Alert variant="info">
               Les frais de livraisons varient en fonction de la valeur de l'objet et de l'accès au lieu.
             </Alert>
           </div>
 
-          <ErrorMessage error={error} />
-
           <Button
             size="large"
             className="mt-6"
             onClick={handleSubmit}
             isLoading={isLoading}
-            disabled={!selectedResidence || !selectedAccess}
           >
             Continue to payment
           </Button>
