@@ -7,7 +7,6 @@ import { Cart } from "@medusajs/medusa"
 import { Button, Heading, Text, clx } from "@medusajs/ui"
 
 import { Alert } from "@medusajs/ui"
-import ErrorMessage from "@modules/checkout/components/error-message"
 import Divider from "@modules/common/components/divider"
 import Radio from "@modules/common/components/radio"
 import Spinner from "@modules/common/icons/spinner"
@@ -64,6 +63,10 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
     setIsLoading(false)
     setError(null)
   }, [isOpen])
+
+  function handleChange(value: string): void {
+    throw new Error("Function not implemented.")
+  }
 
   /*  function handleChange(value: string): void {
      throw new Error("Function not implemented.")

@@ -1,25 +1,25 @@
 "use client"
 
-import {
-  useSearchParams,
-  useRouter,
-  usePathname,
-  useParams,
-} from "next/navigation"
-import { Cart, Customer } from "@medusajs/medusa"
 import { CheckCircleSolid } from "@medusajs/icons"
+import { Cart, Customer } from "@medusajs/medusa"
 import { Heading, Text, useToggleState } from "@medusajs/ui"
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation"
 
 import Divider from "@modules/common/components/divider"
 import Spinner from "@modules/common/icons/spinner"
 
-import BillingAddress from "../billing_address"
-import ShippingAddress from "../shipping-address"
-import { setAddresses } from "../../actions"
-import { SubmitButton } from "../submit-button"
-import { useFormState } from "react-dom"
-import ErrorMessage from "../error-message"
 import compareAddresses from "@lib/util/compare-addresses"
+import { useFormState } from "react-dom"
+import { setAddresses } from "../../actions"
+import BillingAddress from "../billing_address"
+import ErrorMessage from "../error-message"
+import ShippingAddress from "../shipping-address"
+import { SubmitButton } from "../submit-button"
 
 const Addresses = ({
   cart,
@@ -111,6 +111,7 @@ const Addresses = ({
                       {cart.shipping_address.first_name}{" "}
                       {cart.shipping_address.last_name}
                     </Text>
+                    {/* preview : add delivery info here "Maison, escaliers" */}
                     <Text className="txt-medium text-ui-fg-subtle">
                       {cart.shipping_address.address_1}{" "}
                       {cart.shipping_address.address_2}
@@ -143,7 +144,7 @@ const Addresses = ({
 
                     {sameAsSBilling ? (
                       <Text className="txt-medium text-ui-fg-subtle">
-                        Billing- and delivery address are the same.
+                        Billing and delivery address are the same.
                       </Text>
                     ) : (
                       <>

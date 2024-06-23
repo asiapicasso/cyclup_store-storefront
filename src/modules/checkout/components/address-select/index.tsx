@@ -27,6 +27,7 @@ const AddressSelect = ({ addresses, cart }: AddressSelectProps) => {
           "deleted_at",
           "metadata",
           "customer_id",
+          /* delivery_info_recidency and access */
         ]) as AddressPayload,
       })
     }
