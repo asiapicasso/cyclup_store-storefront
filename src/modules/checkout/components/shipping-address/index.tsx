@@ -1,12 +1,27 @@
-import { RadioGroup } from "@headlessui/react"
-import { Cart, Customer } from "@medusajs/medusa"
-import { Container } from "@medusajs/ui"
-import Checkbox from "@modules/common/components/checkbox"
-import Input from "@modules/common/components/input"
-import Radio from "@modules/common/components/radio"
-import React, { useEffect, useMemo, useState } from "react"
-import AddressSelect from "../address-select"
-import CountrySelect from "../country-select"
+import { RadioGroup } from "@headlessui/react";
+import { Cart, Customer } from "@medusajs/medusa";
+import { Container } from "@medusajs/ui";
+import Checkbox from "@modules/common/components/checkbox";
+import Input from "@modules/common/components/input";
+import Radio from "@modules/common/components/radio";
+import React, { useEffect, useMemo, useState } from "react";
+import AddressSelect from "../address-select";
+import CountrySelect from "../country-select";
+
+type FormData = {
+  "shipping_address.first_name": string;
+  "shipping_address.last_name": string;
+  "shipping_address.delivery_info_residency": boolean;
+  "shipping_address.delivery_info_access": boolean;
+  "shipping_address.address_1": string;
+  "shipping_address.company": string;
+  "shipping_address.postal_code": string;
+  "shipping_address.city": string;
+  "shipping_address.country_code": string;
+  "shipping_address.province": string;
+  email: string;
+  "shipping_address.phone": string;
+};
 
 const ShippingAddress = ({
   customer,
@@ -15,15 +30,17 @@ const ShippingAddress = ({
   onChange,
   countryCode,
 }: {
-  customer: Omit<Customer, "password_hash"> | null
-  cart: Omit<Cart, "refundable_amount" | "refunded_total"> | null
-  checked: boolean
-  onChange: () => void
-  countryCode: string
+  customer: Omit<Customer, "password_hash"> | null;
+  cart: Omit<Cart, "refundable_amount" | "refunded_total"> | null;
+  checked: boolean;
+  onChange: () => void;
+  countryCode: string;
 }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     "shipping_address.first_name": cart?.shipping_address?.first_name || "",
     "shipping_address.last_name": cart?.shipping_address?.last_name || "",
+    "shipping_address.delivery_info_residency": cart?.shipping_address?.delivery_info_residency || false,
+    "shipping_address.delivery_info_access": cart?.shipping_address?.delivery_info_access || false,
     "shipping_address.address_1": cart?.shipping_address?.address_1 || "",
     "shipping_address.company": cart?.shipping_address?.company || "",
     "shipping_address.postal_code": cart?.shipping_address?.postal_code || "",
@@ -33,18 +50,15 @@ const ShippingAddress = ({
     "shipping_address.province": cart?.shipping_address?.province || "",
     email: cart?.email || "",
     "shipping_address.phone": cart?.shipping_address?.phone || "",
-  })
+  });
 
-  const [selectedResidence, setSelectedResidence] = useState<boolean | null>(null)
-  const [selectedAccess, setSelectedAccess] = useState<boolean | null>(null)
-  const [residenceError, setResidenceError] = useState<string | null>(null)
-  const [accessError, setAccessError] = useState<string | null>(null)
-
+  const [residenceError, setResidenceError] = useState<string | null>(null);
+  const [accessError, setAccessError] = useState<string | null>(null);
 
   const countriesInRegion = useMemo(
     () => cart?.region.countries.map((c) => c.iso_2),
     [cart?.region]
-  )
+  );
 
   const addressesInRegion = useMemo(
     () =>
@@ -52,12 +66,14 @@ const ShippingAddress = ({
         (a) => a.country_code && countriesInRegion?.includes(a.country_code)
       ),
     [customer?.shipping_addresses, countriesInRegion]
-  )
+  );
 
   useEffect(() => {
     setFormData({
       "shipping_address.first_name": cart?.shipping_address?.first_name || "",
       "shipping_address.last_name": cart?.shipping_address?.last_name || "",
+      "shipping_address.delivery_info_residency": cart?.shipping_address?.delivery_info_residency || false,
+      "shipping_address.delivery_info_access": cart?.shipping_address?.delivery_info_access || false,
       "shipping_address.address_1": cart?.shipping_address?.address_1 || "",
       "shipping_address.company": cart?.shipping_address?.company || "",
       "shipping_address.postal_code": cart?.shipping_address?.postal_code || "",
@@ -67,39 +83,56 @@ const ShippingAddress = ({
       "shipping_address.province": cart?.shipping_address?.province || "",
       email: cart?.email || "",
       "shipping_address.phone": cart?.shipping_address?.phone || "",
-    })
-  }, [cart?.shipping_address, cart?.email])
+    });
+  }, [cart?.shipping_address, cart?.email]);
 
   const handleChange = (
     e: React.ChangeEvent<
-      HTMLInputElement | HTMLInputElement | HTMLSelectElement
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
+    const { name, value, type } = e.target;
+    const newValue = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
+      [name]: newValue,
+    });
+  };
 
   const handleResidenceChange = (value: string) => {
-    setSelectedResidence(value === "true")
-  }
+    const boolValue = value === "true";
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      "shipping_address.delivery_info_residency": boolValue,
+    }));
+  };
 
   const handleAccessChange = (value: string) => {
-    setSelectedAccess(value === "true")
-  }
-
+    const boolValue = value === "true";
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      "shipping_address.delivery_info_access": boolValue,
+    }));
+  };
 
   const handleSubmit = () => {
     let hasError = false;
-    if (selectedResidence === null) {
+    const addressId = cart?.shipping_address?.id;
+
+    if (!addressId) {
+      console.error("Address ID is undefined");
+      return;
+    }
+
+    if (formData["shipping_address.delivery_info_residency"] === null) {
       setResidenceError("Please select a residence option.");
       hasError = true;
     } else {
       setResidenceError(null);
     }
 
-    if (selectedAccess === null) {
+    if (formData["shipping_address.delivery_info_access"] === null) {
       setAccessError("Please select an access option.");
       hasError = true;
     } else {
@@ -111,15 +144,17 @@ const ShippingAddress = ({
     }
 
     const data = {
-      delivery_info_residency: selectedResidence ?? false,
-      delivery_info_access: selectedAccess ?? false,
+      ...formData,
+      delivery_info_residency: formData["shipping_address.delivery_info_residency"],
+      delivery_info_access: formData["shipping_address.delivery_info_access"],
     };
 
     updateDatabase(data);
   };
 
-  const updateDatabase = (data: { delivery_info_residency: boolean; delivery_info_access: boolean }) => {
-    fetch('/update-address', {
+
+  const updateDatabase = (data: any) => {
+    fetch('/api/update-address', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -164,37 +199,36 @@ const ShippingAddress = ({
         />
 
         <div className="col-span-2">
-          <h6 className="">Décrivez-nous l'accès de l'emplacement futur de votre achat
+          <h6 className="">Describe the access to the future location of your current purchase
             <span className="text-red-500 ml-1">*</span></h6> </div>
-        <RadioGroup value={selectedResidence?.toString()} onChange={handleResidenceChange}>
+
+        <RadioGroup value={formData["shipping_address.delivery_info_residency"].toString()} onChange={handleResidenceChange}>
           <div className="grid grid-cols-2 items-center justify-between text-regular cursor-pointer py-2 border rounded-rounded px-8">
             <RadioGroup.Option value="true" className="flex items-center">
-              <Radio checked={selectedResidence === true} />
+              <Radio checked={formData["shipping_address.delivery_info_residency"] === true} />
               <span className="ml-2">House</span>
             </RadioGroup.Option>
             <RadioGroup.Option value="false" className="flex items-center">
-              <Radio checked={selectedResidence === false} />
+              <Radio checked={formData["shipping_address.delivery_info_residency"] === false} />
               <span className="ml-2">Appartement</span>
             </RadioGroup.Option>
           </div>
         </RadioGroup>
         {residenceError && <p className="text-red-500 col-span-2">{residenceError}</p>}
 
-        <RadioGroup value={selectedAccess?.toString()} onChange={handleAccessChange}>
+        <RadioGroup value={formData["shipping_address.delivery_info_access"].toString()} onChange={handleAccessChange}>
           <div className="grid grid-cols-2 items-center justify-between text-regular cursor-pointer py-2 border rounded-rounded px-8">
             <RadioGroup.Option value="true" className="flex items-center">
-              <Radio checked={selectedAccess === true} />
+              <Radio checked={formData["shipping_address.delivery_info_access"] === true} />
               <span className="ml-2">Elevator</span>
             </RadioGroup.Option>
             <RadioGroup.Option value="false" className="flex items-center">
-              <Radio checked={selectedAccess === false} />
+              <Radio checked={formData["shipping_address.delivery_info_access"] === false} />
               <span className="ml-2">Stairs</span>
             </RadioGroup.Option>
           </div>
         </RadioGroup>
         {accessError && <p className="text-red-500 col-span-2">{accessError}</p>}
-
-
 
 
         <Input
@@ -272,7 +306,7 @@ const ShippingAddress = ({
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ShippingAddress
+export default ShippingAddress;
