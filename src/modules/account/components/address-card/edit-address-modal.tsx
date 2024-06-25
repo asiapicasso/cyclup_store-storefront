@@ -81,6 +81,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
               {address.company}
             </Text>
           )}
+          {/* add delivery info */}
           <Text className="flex flex-col text-left text-base-regular mt-2">
             <span>
               {address.address_1}

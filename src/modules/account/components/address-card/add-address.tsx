@@ -1,17 +1,17 @@
 "use client"
 
-import { Region } from "@medusajs/medusa"
 import { Plus } from "@medusajs/icons"
+import { Region } from "@medusajs/medusa"
 import { Button, Heading } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { useFormState } from "react-dom"
 
 import useToggleState from "@lib/hooks/use-toggle-state"
+import { addCustomerShippingAddress } from "@modules/account/actions"
 import CountrySelect from "@modules/checkout/components/country-select"
+import { SubmitButton } from "@modules/checkout/components/submit-button"
 import Input from "@modules/common/components/input"
 import Modal from "@modules/common/components/modal"
-import { SubmitButton } from "@modules/checkout/components/submit-button"
-import { addCustomerShippingAddress } from "@modules/account/actions"
 
 const AddAddress = ({ region }: { region: Region }) => {
   const [successState, setSuccessState] = useState(false)
@@ -71,6 +71,9 @@ const AddAddress = ({ region }: { region: Region }) => {
                   autoComplete="family-name"
                 />
               </div>
+
+              {/* add delivery_info */}
+
               <Input
                 label="Company"
                 name="company"
