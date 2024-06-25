@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,18 +18,30 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["cypress"],
+    "types": [
+      "cypress"
+    ],
     "baseUrl": "./src",
     "paths": {
-      "@lib/*": ["lib/*"],
-      "@modules/*": ["modules/*"],
-      "@pages/*": ["pages/*"]
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@modules/*": [
+        "modules/*"
+      ],
+      "@pages/*": [
+        "pages/*"
+      ]
     },
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    /* "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ] */
   },
   "include": [
     "next-env.d.ts",
@@ -35,7 +51,8 @@
     "cypress/support/commands.js",
     "cypress/integration/product.spec.js",
     "cypress/plugins/index.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "custom.d.ts"
   ],
   "exclude": [
     "node_modules",

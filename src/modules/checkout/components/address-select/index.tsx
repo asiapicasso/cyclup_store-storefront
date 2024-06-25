@@ -1,13 +1,13 @@
 import { Listbox, Transition } from "@headlessui/react"
-import { Address, AddressPayload, Cart } from "@medusajs/medusa"
 import { ChevronUpDown } from "@medusajs/icons"
+import { Address, AddressPayload, Cart } from "@medusajs/medusa"
 import { clx } from "@medusajs/ui"
 import { omit } from "lodash"
 import { Fragment, useMemo } from "react"
 
-import Radio from "@modules/common/components/radio"
-import { cartUpdate } from "@modules/checkout/actions"
 import compareAddresses from "@lib/util/compare-addresses"
+import { cartUpdate } from "@modules/checkout/actions"
+import Radio from "@modules/common/components/radio"
 
 type AddressSelectProps = {
   addresses: Address[]
@@ -27,7 +27,9 @@ const AddressSelect = ({ addresses, cart }: AddressSelectProps) => {
           "deleted_at",
           "metadata",
           "customer_id",
-          /* delivery_info_recidency and access */
+          "delivery_info_residency",
+          "delivery_info_access",
+          /* add delivery_info_residency and access */
         ]) as AddressPayload,
       })
     }

@@ -9,9 +9,6 @@ import {
   updateCustomer,
   updateShippingAddress,
 } from "@lib/data"
-import { revalidateTag } from "next/cache"
-import { redirect } from "next/navigation"
-import { cookies, headers } from "next/headers"
 import {
   Customer,
   StorePostCustomersCustomerAddressesAddressReq,
@@ -19,6 +16,9 @@ import {
   StorePostCustomersCustomerReq,
   StorePostCustomersReq,
 } from "@medusajs/medusa"
+import { revalidateTag } from "next/cache"
+import { cookies, headers } from "next/headers"
+import { redirect } from "next/navigation"
 
 export async function signUp(_currentState: unknown, formData: FormData) {
   const customer = {
@@ -172,6 +172,8 @@ export async function addCustomerShippingAddress(
     address: {
       first_name: formData.get("first_name") as string,
       last_name: formData.get("last_name") as string,
+      /* delivery_info_residency: formData.get("delivery_info_residency") as boolean,
+      delivery_info_access: formData.get("delivery_info_access") as boolean, */
       company: formData.get("company") as string,
       address_1: formData.get("address_1") as string,
       address_2: formData.get("address_2") as string,
@@ -202,6 +204,8 @@ export async function updateCustomerShippingAddress(
   const address = {
     first_name: formData.get("first_name") as string,
     last_name: formData.get("last_name") as string,
+    /* delivery_info_residency: formData.get("delivery_info_residency") as boolean,
+       delivery_info_access: formData.get("delivery_info_access") as boolean, */
     address_1: formData.get("address_1") as string,
     address_2: formData.get("address_2") as string,
     company: formData.get("company") as string,
@@ -241,6 +245,8 @@ export async function updateCustomerBillingAddress(
     billing_address: {
       first_name: formData.get("billing_address.first_name"),
       last_name: formData.get("billing_address.last_name"),
+      /* delivery_info_residency: formData.get("billing_address.delivery_info_residency"),
+       delivery_info_access: formData.get("billing_address.delivery_info_access"), */
       company: formData.get("billing_address.company"),
       address_1: formData.get("billing_address.address_1"),
       address_2: formData.get("billing_address.address_2"),
