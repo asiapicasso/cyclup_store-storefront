@@ -26,7 +26,7 @@ const ShippingAddress = ({
   cart,
   checked,
   onChange,
-  countryCode,
+  countryCode, //warning on production
 }: {
   customer: Omit<Customer, "password_hash"> | null;
   cart: Omit<Cart, "refundable_amount" | "refunded_total"> | null;

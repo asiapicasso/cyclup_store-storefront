@@ -11,13 +11,13 @@ const Service = () => {
             <div className="mb-14">
                 <h2 className="text-2xl font-semibold mb-6">Achat et Expertise</h2>
                 <p className="text-lg leading-relaxed">
-                    Nous proposons des services d'achat et d'expertise pour divers objets de valeur. Que vous souhaitiez vendre des antiquités, des œuvres d'art ou des objets de collection, nos experts sont prêts à évaluer vos articles et à vous offrir le meilleur prix.
+                    Nous proposons des services d&apos;'achat et d&apos;'expertise pour divers objets de valeur. Que vous souhaitiez vendre des antiquités, des œuvres d&apos;'art ou des objets de collection, nos experts sont prêts à évaluer vos articles et à vous offrir le meilleur prix.
                 </p>
             </div>
             <div className="mb-14">
                 <h2 className="text-2xl font-semibold mb-6">Vide Maison / Appartement et Rachat du Contenu</h2>
                 <p className="text-lg leading-relaxed">
-                    Nous offrons un service complet de vide maison et appartement, incluant le rachat du contenu. Que vous déménagiez ou que vous ayez besoin de désencombrer votre espace, nous nous occupons de tout, de l'évaluation à l'achat des articles que vous souhaitez vendre.
+                    Nous offrons un service complet de vide maison et appartement, incluant le rachat du contenu. Que vous déménagiez ou que vous ayez besoin de désencombrer votre espace, nous nous occupons de tout, de l&apos;'évaluation à l&apos;'achat des articles que vous souhaitez vendre.
                 </p>
             </div>
         </div>
