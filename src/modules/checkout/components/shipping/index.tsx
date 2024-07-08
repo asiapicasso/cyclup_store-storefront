@@ -131,11 +131,11 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
                             cart.shipping_methods[0]?.shipping_option_id
                           }
                         />
-                        <span className="text-base-regular">{option.name}</span>
+                        <span className="text-base-regular">{option.id}</span> {/* todo verify on id, name */}
                       </div>
                       <span className="justify-self-end text-ui-fg-base">
                         {formatAmount({
-                          amount: option.amount!,
+                          amount: option.price!, //todo verify on price, amont
                           region: cart?.region,
                           includeTaxes: false,
                         })}
