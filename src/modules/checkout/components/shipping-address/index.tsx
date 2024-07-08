@@ -98,7 +98,7 @@ const ShippingAddress = ({
     });
   }; */
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { name, value, type } = e.target;
     const newValue = type === "checkbox" ? e.target.checked : value;
     setFormData({ ...formData, [name]: newValue });
@@ -141,7 +141,7 @@ const ShippingAddress = ({
     updateDatabase(data);
   }; */
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
 
     fetch('/api/update-address', {
