@@ -183,7 +183,7 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
             {accessError && <p className="text-red-500">{accessError}</p>} */}
 
             <Alert variant="info">
-              Les frais de livraisons varient en fonction de la valeur de l&apos;'objet et de l&apos;'accès au lieu.
+              Les frais de livraisons varient en fonction de la valeur de l&apos;objet et de l&apos;accès au lieu.
             </Alert>
           </div>
 
