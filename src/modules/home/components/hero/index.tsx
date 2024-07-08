@@ -9,7 +9,7 @@ const Hero = () => {
           <Heading
             level="h1"
             className="text-3xl leading-10 text-ui-fg-base font-normal"
-          > Banner&apos;'s title </Heading>
+          > Banner&apos;s title </Heading>
         </span>
         <a
           href="https://maps.app.goo.gl/Kd4JEZ164rgA1YyV8"
