@@ -32,7 +32,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
       <div className="flex flex-col gap-4 h-full bg-white w-full">
         <OrderDetails order={order} showStatus />
         <Items items={order.items} region={order.region} />
-        <ShippingDetails order={order} selectedResidence={null} selectedAccess={null} />
+        <ShippingDetails order={order} /* selectedResidence={null} selectedAccess={null} */ />
         <OrderSummary order={order} />
         <Help />
       </div>
