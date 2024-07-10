@@ -202,31 +202,36 @@ const ShippingAddress = ({
         <div className="col-span-2">
           <h6>Describe the access to the future location of your current purchase
             <span className="text-red-500 ml-1">*</span>
+            {/* checkout shipping address form */}
           </h6>
         </div>
 
         <RadioGroup name="shipping_address.delivery_info_residency" onChange={handleChange}>
           <div className="grid grid-cols-2 items-center justify-between text-regular cursor-pointer py-2 border rounded-rounded px-8">
-            <RadioGroup.Item value="true" className="flex items-center" id="radio_house_true">
-              <Label htmlFor="radio_house_true"/*  className="ml-2" */>House</Label>
-            </RadioGroup.Item>
-            <RadioGroup.Item value="false" className="flex items-center" id="radio_house_false">
-              <Label htmlFor="radio_house_false" /* className="ml-2" */>Apartment</Label>
-            </RadioGroup.Item>
-          </div>
+            <div className="flex items-center gap-x-3">
+              <RadioGroup.Item value="true" className="flex items-center" id="radio_house_true" />
+              <Label htmlFor="radio_house_true" className="ml-2" /* weight="plus" */>House</Label>
+            </div>
+            <div className="flex items-center gap-x-3">
+              <RadioGroup.Item value="false" className="flex items-center" id="radio_house_false" />
+              <Label htmlFor="radio_house_false" className="ml-2" /* weight="plus" */>Apartment</Label>
+            </div> </div>
         </RadioGroup >
         {residenceError && <p className="text-red-500 col-span-2">{residenceError}</p>
         }
 
         <RadioGroup name="shipping_address.delivery_info_access" onChange={handleChange}>
           <div className="grid grid-cols-2 items-center justify-between text-regular cursor-pointer py-2 border rounded-rounded px-8">
-            <RadioGroup.Item value="true" className="flex items-center" id="radio_elevator_true">
+            <div className="flex items-center gap-x-3">
+              <RadioGroup.Item value="true" className="flex items-center" id="radio_elevator_true" />
               <Label htmlFor="radio_elevator_true" className="ml-2">Elevator</Label>
-            </RadioGroup.Item>
-            <RadioGroup.Item value="false" className="flex items-center" id="radio_elevator_false">
+            </div>
+            <div className="flex items-center gap-x-3">
+              <RadioGroup.Item value="false" className="flex items-center" id="radio_elevator_false" />
               <Label htmlFor="radio_elevator_false" className="ml-2">Stairs</Label>
-            </RadioGroup.Item>
+            </div>
           </div>
+
         </RadioGroup>
         {accessError && <p className="text-red-500 col-span-2">{accessError}</p>}
 
