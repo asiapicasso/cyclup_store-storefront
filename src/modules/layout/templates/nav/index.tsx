@@ -23,7 +23,7 @@ export default async function Nav() {
               href="/"
               className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
             >
-              Medusa Store
+              Cyclup Design
             </LocalizedClientLink>
           </div>
 
