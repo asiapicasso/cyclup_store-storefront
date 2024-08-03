@@ -19,11 +19,15 @@ This starter is compatible with versions >= 1.8.0 of `@medusajs/medusa`.
 
 ## Install the dependencies on the project
 
-`npm install`
+```bash
+npm install
+```
 
 ## Run the project
 
-`npm run dev` 
+```bash
+npm run dev
+```
 
 ### Open the code and start customizing
 
