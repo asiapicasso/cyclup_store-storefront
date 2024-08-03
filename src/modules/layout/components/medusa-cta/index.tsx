@@ -6,7 +6,17 @@ import NextJs from "../../../common/icons/nextjs"
 const MedusaCTA = () => {
   return (
     <Text className="flex gap-x-2 txt-compact-small-plus items-center">
-      Powered by
+      Developp by
+      <a
+        href="https://picassoasia.ch"
+        target="_blank"
+        rel="noreferrer"
+        className="hover:text-ui-fg-base"
+      >
+        Asia Picasso
+      </a>
+
+      | Powered by
       <a href="https://www.medusajs.com" target="_blank" rel="noreferrer">
         <Medusa fill="#9ca3af" className="fill-[#9ca3af]" />
       </a>
