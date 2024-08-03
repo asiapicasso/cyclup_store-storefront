@@ -1,3 +1,6 @@
+import { Envelope } from "@medusajs/icons";
+import { Button } from "@medusajs/ui";
+
 const Service = () => {
     return (
         <div className="p-12 max-w-4xl mx-auto">
@@ -20,7 +23,21 @@ const Service = () => {
                     Nous offrons un service complet de vide maison et appartement, incluant le rachat du contenu. Que vous déménagiez ou que vous ayez besoin de désencombrer votre espace, nous nous occupons de tout, de l&apos;évaluation à l&apos;achat des articles que vous souhaitez vendre.
                 </p>
             </div>
+            <div className="justify-center items-center text-center">
+                <a
+                    href="mailto:malek@cyclupdesign.ch"
+                    target="_blank"
+                >
+                    <Button variant="secondary">
+                        Ecrivez-nous par mail
+                        <Envelope />
+                    </Button>
+                </a>
+            </div>
         </div>
+
+
+
     )
 }
 
