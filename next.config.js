@@ -9,6 +9,7 @@ const nextConfig = withStoreConfig({
   reactStrictMode: true,
   images: {
     remotePatterns: [
+      /* TODO remove others protocol */
       {
         protocol: "http",
         hostname: "localhost",
@@ -24,6 +25,11 @@ const nextConfig = withStoreConfig({
       {
         protocol: "https",
         hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com",
+      },
+      {
+        protocol: 'https',
+        hostname: '30dwfhehrdm4b3qu.public.blob.vercel-storage.com',
+        port: '',
       },
     ],
   },
