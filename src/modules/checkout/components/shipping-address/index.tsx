@@ -54,7 +54,7 @@ const ShippingAddress = ({
   const [accessError, setAccessError] = useState<string | null>(null);
 
   const countriesInRegion = useMemo(
-    () => cart?.region.countries.map((c) => c.iso_2),
+    () => cart?.region.countries.map((c: any) => c.iso_2),
     [cart?.region]
   );
 
