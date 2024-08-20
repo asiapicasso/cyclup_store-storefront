@@ -48,3 +48,8 @@ node_modules
 dump.rdb
 
 .vercel
+
+
+# mine
+*.lock
+package-lock.json
